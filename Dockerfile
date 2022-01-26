@@ -1,4 +1,4 @@
-FROM alpine:3.13.6
+FROM alpine:3.12.9
 
 RUN apk add --update --no-cache \
         wget \
@@ -23,10 +23,11 @@ RUN apk add --update --no-cache \
 		openssl-dev \
 		python3-dev=3.8.10-r0 \
 		py3-cffi \
-		py3-cryptography=3.3.2-r0 \
-		py3-setuptools=51.3.3-r0 \
+		py3-cryptography=2.9.2-r0 \
+		py3-setuptools=47.0.0-r0 \
 		sshpass \
 		tar \
+		bind-tools \
 		&& \
 	apk add --no-cache --virtual build-dependencies \
 		gcc \
