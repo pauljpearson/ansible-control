@@ -50,6 +50,7 @@ RUN apk add --update --no-cache \
     ansible-galaxy collection install \
 	    azure.azcollection \
 	    kubernetes.core \
+	    ansible.windows \
 		&& \
 	pip3 install \
 	    -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt \
