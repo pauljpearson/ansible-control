@@ -46,6 +46,7 @@ RUN apk add --update --no-cache \
 		pywinrm[kerberos]==0.4.1 \
 		kubernetes==21.7.0 \
 		jsonpatch==1.32 \
+		pymssql==2.2.5 \
 		&& \
     ansible-galaxy collection install \
 	    azure.azcollection \
