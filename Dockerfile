@@ -53,6 +53,7 @@ RUN apk add --update --no-cache \
 	    azure.azcollection \
 	    kubernetes.core \
 	    ansible.windows \
+		community.general \
 		&& \
 	pip3 install \
 	    -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt \
