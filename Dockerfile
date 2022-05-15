@@ -1,5 +1,5 @@
-FROM alpine:3.12.9
-
+FROM alpine:3.15.4
+ENV PYMSSQL_BUILD_WITH_BUNDLED_FREETDS=1
 RUN apk add --update --no-cache \
         wget \
 		git && \
@@ -21,13 +21,14 @@ RUN apk add --update --no-cache \
 		musl-dev \
 		openssh \
 		openssl-dev \
-		python3-dev=3.8.10-r0 \
+		python3-dev=3.9.7-r4 \
 		py3-cffi \
-		py3-cryptography=2.9.2-r0 \
-		py3-setuptools=47.0.0-r0 \
+		py3-cryptography=3.3.2-r3 \
+		py3-setuptools=52.0.0-r4 \
 		sshpass \
 		tar \
 		bind-tools \
+		freetds-dev \
 		&& \
 	apk add --no-cache --virtual build-dependencies \
 		gcc \
