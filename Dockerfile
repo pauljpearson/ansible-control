@@ -11,8 +11,10 @@ RUN apk add --update --no-cache \
     chmod +x /usr/bin/helm && \
     apk add --no-cache \
 		bzip2 \
+		curl \
 		file \
 		gzip \
+		gnupg \
 		libffi \
 		libffi-dev \
 		krb5 \
@@ -21,6 +23,7 @@ RUN apk add --update --no-cache \
 		musl-dev \
 		openssh \
 		openssl-dev \
+		python3 \
 		python3-dev=3.9.7-r4 \
 		py3-cffi \
 		py3-cryptography=3.3.2-r3 \
@@ -29,6 +32,9 @@ RUN apk add --update --no-cache \
 		tar \
 		bind-tools \
 		freetds-dev \
+		g++ \
+		unixodbc \
+		unixodbc-dev \
 		&& \
 	apk add --no-cache --virtual build-dependencies \
 		gcc \
@@ -48,6 +54,7 @@ RUN apk add --update --no-cache \
 		kubernetes==21.7.0 \
 		jsonpatch==1.32 \
 		pymssql==2.2.5 \
+		pyodbc \
 		&& \
     ansible-galaxy collection install \
 	    azure.azcollection \
@@ -57,6 +64,25 @@ RUN apk add --update --no-cache \
 		&& \
 	pip3 install \
 	    -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt \
+		&& \
+
+	curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/msodbcsql18_18.0.1.1-1_amd64.apk \
+		&& \
+	curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/mssql-tools18_18.0.1.1-1_amd64.apk \
+		&& \
+	curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/msodbcsql18_18.0.1.1-1_amd64.sig \
+		&& \
+	curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/mssql-tools18_18.0.1.1-1_amd64.sig \
+		&& \
+	curl https://packages.microsoft.com/keys/microsoft.asc  | gpg --import - \
+		&& \
+	gpg --verify msodbcsql18_18.0.1.1-1_amd64.sig msodbcsql18_18.0.1.1-1_amd64.apk \
+		&& \
+	gpg --verify mssql-tools18_18.0.1.1-1_amd64.sig mssql-tools18_18.0.1.1-1_amd64.apk \
+		&& \
+	apk add --allow-untrusted \
+		msodbcsql18_18.0.1.1-1_amd64.apk \
+		mssql-tools18_18.0.1.1-1_amd64.apk \
 		&& \
 	apk del build-dependencies \
 		&& \
