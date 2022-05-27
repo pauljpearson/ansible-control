@@ -44,7 +44,6 @@ RUN apk add --update --no-cache \
 	  && \
 	pip3 install \
 		ansible==3.2.0 \
-		azure-cli==2.37.0 \
 		botocore==1.21.38 \
 		boto==2.49.0 \
 		PyYAML==5.4.1 \
@@ -84,6 +83,7 @@ RUN apk add --update --no-cache \
 		msodbcsql18_18.0.1.1-1_amd64.apk \
 		mssql-tools18_18.0.1.1-1_amd64.apk \
 		&& \
+	pip3 install azure-cli==2.37.0 &&\
 	apk del build-dependencies \
 		&& \
 	rm -rf /root/.cache
