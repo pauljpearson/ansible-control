@@ -44,6 +44,7 @@ RUN apk add --update --no-cache \
 	  && \
 	pip3 install \
 		ansible==3.2.0 \
+		azure-cli==2.29.0 \
 		botocore==1.21.38 \
 		boto==2.49.0 \
 		PyYAML==5.4.1 \
