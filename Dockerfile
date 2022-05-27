@@ -44,12 +44,11 @@ RUN apk add --update --no-cache \
 	  && \
 	pip3 install \
 		ansible==3.2.0 \
-		azure-cli==2.29.0 \
+		azure-cli==2.37.0 \
 		botocore==1.21.38 \
 		boto==2.49.0 \
 		PyYAML==5.4.1 \
 		boto3==1.18.38 \
-		awscli==1.20.38 \
 		pyvmomi==7.0.3 \
 		pywinrm[kerberos]==0.4.1 \
 		kubernetes==21.7.0 \
