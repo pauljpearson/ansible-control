@@ -42,7 +42,7 @@ RUN apk add --no-cache --virtual build-dependencies \
 RUN python3 -m ensurepip --upgrade
 	#   && \
 RUN pip3 install \
-		ansible==3.2.0 \
+		ansible[azure]==3.2.0 \
 		botocore==1.21.38 \
 		boto==2.49.0 \
 		PyYAML==5.4.1 \
