@@ -1,15 +1,15 @@
-FROM alpine:3.15.4
+FROM python:3.7-alpine
 ENV PYMSSQL_BUILD_WITH_BUNDLED_FREETDS=1
 RUN apk add --update --no-cache \
         wget \
-		git && \
-    wget https://get.helm.sh/helm-v3.7.2-linux-amd64.tar.gz -O - | tar -xz && \
-    mv linux-amd64/helm /usr/bin/helm && \
+		git
+RUN wget https://get.helm.sh/helm-v3.7.2-linux-amd64.tar.gz -O - | tar -xz
+RUN mv linux-amd64/helm /usr/bin/helm && \
     chmod +x /usr/bin/helm && \
     rm -rf linux-amd64 $$ \
       && \
-    chmod +x /usr/bin/helm && \
-    apk add --no-cache \
+    chmod +x /usr/bin/helm
+RUN apk add --no-cache \
 		bzip2 \
 		curl \
 		file \
@@ -23,26 +23,25 @@ RUN apk add --update --no-cache \
 		musl-dev \
 		openssh \
 		openssl-dev \
-		python3 \
-		python3-dev=3.9.7-r4 \
-		py3-cffi \
-		py3-cryptography=3.3.2-r3 \
-		py3-setuptools=52.0.0-r4 \
+		# python3 \
+		# python3-dev=3.9.7-r4 \
+		# py3-cffi \
+		# py3-cryptography=3.3.2-r3 \
+		# py3-setuptools=52.0.0-r4 \
 		sshpass \
 		tar \
 		bind-tools \
 		freetds-dev \
 		g++ \
 		unixodbc \
-		unixodbc-dev \
-		&& \
-	apk add --no-cache --virtual build-dependencies \
+		unixodbc-dev
+RUN apk add --no-cache --virtual build-dependencies \
 		gcc \
-		make \
-		&& \
-	python3 -m ensurepip --upgrade \
-	  && \
-	pip3 install \
+		make
+		# && \
+RUN python3 -m ensurepip --upgrade
+	#   && \
+RUN pip3 install \
 		ansible==3.2.0 \
 		botocore==1.21.38 \
 		boto==2.49.0 \
@@ -53,39 +52,40 @@ RUN apk add --update --no-cache \
 		kubernetes==21.7.0 \
 		jsonpatch==1.32 \
 		pymssql==2.2.5 \
-		pyodbc \
-		&& \
-    ansible-galaxy collection install \
+		pyodbc
+	# 	&& \
+RUN ansible-galaxy collection install \
 	    azure.azcollection \
 	    kubernetes.core \
 	    ansible.windows \
-		community.general \
-		&& \
-	pip3 install \
-	    -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt \
-		&& \
+		community.general
+	# 	&& \
+RUN pip3 install \
+	    -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
+	# 	&& \
 
-	curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/msodbcsql18_18.0.1.1-1_amd64.apk \
-		&& \
-	curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/mssql-tools18_18.0.1.1-1_amd64.apk \
-		&& \
-	curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/msodbcsql18_18.0.1.1-1_amd64.sig \
-		&& \
-	curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/mssql-tools18_18.0.1.1-1_amd64.sig \
-		&& \
-	curl https://packages.microsoft.com/keys/microsoft.asc  | gpg --import - \
-		&& \
-	gpg --verify msodbcsql18_18.0.1.1-1_amd64.sig msodbcsql18_18.0.1.1-1_amd64.apk \
-		&& \
-	gpg --verify mssql-tools18_18.0.1.1-1_amd64.sig mssql-tools18_18.0.1.1-1_amd64.apk \
-		&& \
-	apk add --allow-untrusted \
+RUN curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/msodbcsql18_18.0.1.1-1_amd64.apk 
+	# 	&& \
+RUN curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/mssql-tools18_18.0.1.1-1_amd64.apk 
+	# 	&& \
+RUN curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/msodbcsql18_18.0.1.1-1_amd64.sig 
+	# 	&& \
+RUN curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/mssql-tools18_18.0.1.1-1_amd64.sig 
+	# 	&& \
+RUN curl https://packages.microsoft.com/keys/microsoft.asc  | gpg --import - 
+	# 	&& \
+RUN gpg --verify msodbcsql18_18.0.1.1-1_amd64.sig msodbcsql18_18.0.1.1-1_amd64.apk 
+	# 	&& \
+RUN gpg --verify mssql-tools18_18.0.1.1-1_amd64.sig mssql-tools18_18.0.1.1-1_amd64.apk 
+	# 	&& \
+RUN apk add --allow-untrusted \
 		msodbcsql18_18.0.1.1-1_amd64.apk \
-		mssql-tools18_18.0.1.1-1_amd64.apk \
-		&& \
-	apk del build-dependencies \
-		&& \
-	rm -rf /root/.cache
+		mssql-tools18_18.0.1.1-1_amd64.apk 
+RUN pip install azure-cli
+	# 	&& \
+RUN apk del build-dependencies 
+	# 	&& \
+RUN rm -rf /root/.cache
 
 VOLUME ["/tmp/playbook"]
 
