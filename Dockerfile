@@ -83,7 +83,6 @@ RUN apk add --update --no-cache \
 		msodbcsql18_18.0.1.1-1_amd64.apk \
 		mssql-tools18_18.0.1.1-1_amd64.apk \
 		&& \
-	pip3 install azure-cli==2.37.0 &&\
 	apk del build-dependencies \
 		&& \
 	rm -rf /root/.cache
