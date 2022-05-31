@@ -1,6 +1,9 @@
-FROM python:3.7-alpine
+FROM alpine:3.15.4
+# FROM ubuntu:22.04
 ENV PYMSSQL_BUILD_WITH_BUNDLED_FREETDS=1
 RUN apk add --update --no-cache \
+# RUN apt update
+# run apt install -y  \
         wget \
 		git
 RUN wget https://get.helm.sh/helm-v3.7.2-linux-amd64.tar.gz -O - | tar -xz
@@ -10,7 +13,9 @@ RUN mv linux-amd64/helm /usr/bin/helm && \
       && \
     chmod +x /usr/bin/helm
 RUN apk add --no-cache \
+# RUN apt install -y  \
 		bzip2 \
+		bash \
 		curl \
 		file \
 		gzip \
@@ -23,11 +28,11 @@ RUN apk add --no-cache \
 		musl-dev \
 		openssh \
 		openssl-dev \
-		# python3 \
-		# python3-dev=3.9.7-r4 \
-		# py3-cffi \
-		# py3-cryptography=3.3.2-r3 \
-		# py3-setuptools=52.0.0-r4 \
+		python3 \
+		python3-dev=3.9.7-r4 \
+		py3-cffi \
+		py3-cryptography=3.3.2-r3 \
+		py3-setuptools=52.0.0-r4 \
 		sshpass \
 		tar \
 		bind-tools \
@@ -36,13 +41,15 @@ RUN apk add --no-cache \
 		unixodbc \
 		unixodbc-dev
 RUN apk add --no-cache --virtual build-dependencies \
+# RUN apt install -y  \
 		gcc \
 		make
 		# && \
 RUN python3 -m ensurepip --upgrade
 	#   && \
 RUN pip3 install \
-		ansible[azure]==3.2.0 \
+		ansible==3.2.0 \
+		azure-cli==2.34.0 \
 		botocore==1.21.38 \
 		boto==2.49.0 \
 		PyYAML==5.4.1 \
@@ -55,13 +62,13 @@ RUN pip3 install \
 		pyodbc
 	# 	&& \
 RUN ansible-galaxy collection install \
-	    azure.azcollection \
+	    azure.azcollection:==1.12.0 \
 	    kubernetes.core \
 	    ansible.windows \
 		community.general
 	# 	&& \
-RUN pip3 install \
-	    -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
+# RUN pip3 install \
+# 	    -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
 	# 	&& \
 
 RUN curl -O https://download.microsoft.com/download/b/9/f/b9f3cce4-3925-46d4-9f46-da08869c6486/msodbcsql18_18.0.1.1-1_amd64.apk 
@@ -79,11 +86,13 @@ RUN gpg --verify msodbcsql18_18.0.1.1-1_amd64.sig msodbcsql18_18.0.1.1-1_amd64.a
 RUN gpg --verify mssql-tools18_18.0.1.1-1_amd64.sig mssql-tools18_18.0.1.1-1_amd64.apk 
 	# 	&& \
 RUN apk add --allow-untrusted \
+# RUN apt install -y  \
 		msodbcsql18_18.0.1.1-1_amd64.apk \
 		mssql-tools18_18.0.1.1-1_amd64.apk 
-RUN pip install azure-cli
+# RUN curl -L https://aka.ms/InstallAzureCli | bash
+# RUN pip3 install azure-cli
 	# 	&& \
-RUN apk del build-dependencies 
+# RUN apk del build-dependencies 
 	# 	&& \
 RUN rm -rf /root/.cache
 
