@@ -46,8 +46,7 @@ RUN pip3 install \
 RUN pip install ansible-core ansible pywinrm
 
 
-RUN ansible-galaxy collection install azure.azcollection:==1.12.0
-
+RUN ansible-galaxy collection install azure.azcollection:==1.13.0
 
 RUN ansible-galaxy collection install ansible.windows
 
